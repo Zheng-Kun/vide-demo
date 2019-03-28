@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <video src="local" autoplay></video>
+
+  <script>
+    var localVideo = document.querySelector("video.local");
+    var localMediaStream = null;
+    var localMediaURL = null;
+
+    function getUserMedia(callback) {
+      if(navigator.getUserMedia === undefined){
+        navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+        if(navigator.getUserMedia === undefined) {
+          console.error("不支持getUserMedia");
+          return false;
+        }
+      }
+      navigator.getUserMedia({ video: true, audio: true }, callback, function(e) {
+        console.error('getUserMedia failed: ' + e.message);
+      });
+    }
+
+    getUserMedia(function(stream){
+      localMediaStream = stream;
+      localVideo = localMediaURL = URL.createObjectURL(localMediaStream);
+    });
+  </script>
+</body>
+</html>
